@@ -9,7 +9,7 @@ if __name__ == "__main__":
     enc_inputs, dec_inputs, dec_outputs = make_data()
     loader = Data.DataLoader(MyDataSet(enc_inputs, dec_inputs, dec_outputs), 2, True)
 
-    model = Transformer().cuda()
+    model = Transformer()
     criterion = nn.CrossEntropyLoss(ignore_index=0)         # 忽略 占位符 索引为0.
     optimizer = optim.SGD(model.parameters(), lr=1e-3, momentum=0.99)
 
@@ -18,7 +18,7 @@ if __name__ == "__main__":
                                                             # dec_inputs : [batch_size, tgt_len]
                                                             # dec_outputs: [batch_size, tgt_len]
 
-            enc_inputs, dec_inputs, dec_outputs = enc_inputs.cuda(), dec_inputs.cuda(), dec_outputs.cuda()
+            enc_inputs, dec_inputs, dec_outputs = enc_inputs, dec_inputs, dec_outputs
             outputs, enc_self_attns, dec_self_attns, dec_enc_attns = model(enc_inputs, dec_inputs)
                                                             # outputs: [batch_size * tgt_len, tgt_vocab_size]
             loss = criterion(outputs, dec_outputs.view(-1))
